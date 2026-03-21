@@ -6,9 +6,9 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white shadow-md pl-32 px-6 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold text-blue-500">
-        Quick Decision
+    <div className="bg-white shadow-md pl-32 pr-16 px-6 py-4 flex justify-between items-center">
+      <h1 className="text-4xl font-bold text-blue-500">
+        Quick Pick
       </h1>
 
       <button
@@ -36,7 +36,7 @@ export default function Navbar() {
             }
           });
         }}
-        className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600"
+        className="bg-red-500 text-white text-lg px-4 py-1 rounded-lg hover:bg-red-600"
       >
         Logout
       </button>
