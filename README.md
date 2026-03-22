@@ -15,7 +15,7 @@ A modern poll-based web application where users can create polls, vote, and make
 *  Create and manage polls
 *  Vote on polls
 *  Authentication (Login / Register)
-*  Prevent duplicate voting (UI level)
+*  Prevent duplicate voting
 *  Real-time vote count display
 *  Clean and responsive UI
 *  Protected routes (Dashboard access control)
