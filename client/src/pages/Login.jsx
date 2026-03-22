@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import API from "../api";
 
 export default function Login() {
@@ -12,9 +11,9 @@ export default function Login() {
 
   const token = localStorage.getItem("token");
 
-if (token) {
-  return <Navigate to="/Dashboard" replace />;
-}
+  if (token) {
+    return <Navigate to="/Dashboard" replace />;
+  }
 
   const handleLogin = async () => {
     try {
@@ -32,63 +31,81 @@ if (token) {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-gradient-to-br from-indigo-50 via-white to-blue-50">
 
-      {/* LEFT */}
-      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-500 to-indigo-600 text-white items-center justify-center">
-        <div className="text-center px-10">
-          <h1 className="text-6xl font-bold mb-4">Quick Pick</h1>
-          <p className="text-2xl opacity-90">
-            Create polls. Get opinions. Decide faster.
+      {/* LEFT (BRAND + GLOW) */}
+      <div className="hidden lg:flex w-1/2 items-center justify-center relative overflow-hidden">
+
+        <div className="absolute w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-3xl top-20 left-10"></div>
+        <div className="absolute w-[400px] h-[400px] bg-indigo-400/20 rounded-full blur-3xl bottom-10 right-10"></div>
+
+        <div className="relative z-10 text-center px-10">
+          <h1 className="text-5xl font-bold text-gray-800 mb-4">
+            Welcome Back
+          </h1>
+
+          <p className="text-lg text-gray-600 max-w-md">
+            Log in to continue creating polls and making decisions faster.
           </p>
         </div>
       </div>
 
-      {/* RIGHT */}
-      <div className="flex w-full md:w-1/2 items-center justify-center bg-gray-100">
-        <div className="bg-white p-10 rounded-3xl shadow-2xl w-[380px] md:w-[420px]">
+      {/* RIGHT (FORM) */}
+      <div className="flex w-full lg:w-1/2 items-center justify-center px-4">
 
-          <h2 className="text-3xl font-bold mb-2 text-gray-800">
-            Welcome Back 👋
+        <div className="w-full max-w-md bg-white/70 backdrop-blur-xl border border-gray-200 p-8 rounded-3xl shadow-xl">
+
+          <h2 className="text-2xl font-semibold text-gray-800 mb-1">
+            Sign in to Quick Pick
           </h2>
 
-          <p className="text-gray-500 mb-6">Login to continue</p>
+          <p className="text-gray-500 text-sm mb-6">
+            Enter your credentials to continue
+          </p>
 
-          {/* ERROR */}
           {error && (
-            <p className="text-red-500 mb-3 text-sm">{error}</p>
+            <p className="text-red-500 text-sm mb-4">{error}</p>
           )}
 
-          <input
-            type="email"
-            placeholder="Email address"
-            className="w-full border p-3 rounded-xl mb-4"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border p-3 rounded-xl mb-5"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button
-            onClick={handleLogin}
-            className="w-full bg-blue-500 text-white p-3 rounded-xl"
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+            className="space-y-4"
           >
-            Login
-          </button>
+            <input
+              type="email"
+              placeholder="Email address"
+              className="w-full bg-white border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-          <p className="mt-5 text-sm text-center text-gray-600">
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full bg-white border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              type="submit"
+              className="w-full mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-xl font-medium hover:opacity-90 transition"
+            >
+              Login
+            </button>
+          </form>
+
+          <p className="mt-6 text-sm text-center text-gray-600">
             Don’t have an account?{" "}
             <span
-              className="text-blue-500 cursor-pointer"
+              className="text-blue-500 cursor-pointer hover:underline"
               onClick={() => navigate("/register")}
             >
               Register
             </span>
           </p>
+
         </div>
       </div>
     </div>

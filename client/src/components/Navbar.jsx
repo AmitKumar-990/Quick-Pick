@@ -6,11 +6,20 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white shadow-md pl-32 pr-16 px-6 py-4 flex justify-between items-center">
-      <h1 className="text-4xl font-bold text-blue-500">
-        Quick Pick
-      </h1>
+    <div className="sticky top-0 z-50 bg-white border-b border-gray-100 pr-24 px-8 py-3 flex justify-between items-center shadow-sm">
+      
+      {/* Logo Section */}
+      <div className="flex pl-20 items-center gap-3">
+        <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-lg shadow-md">
+          QP
+        </div>
 
+        <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">
+          Quick <span className="text-blue-500">Pick</span>
+        </h1>
+      </div>
+
+      {/* Right Section */}
       <button
         onClick={() => {
           Swal.fire({
@@ -36,7 +45,7 @@ export default function Navbar() {
             }
           });
         }}
-        className="bg-red-500 text-white text-lg px-4 py-1 rounded-lg hover:bg-red-600"
+        className="flex items-center gap-2 bg-gray-100 hover:bg-red-500 text-gray-700 hover:text-white px-4 py-2 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md"
       >
         Logout
       </button>

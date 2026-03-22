@@ -108,171 +108,175 @@ export default function Dashboard() {
         }
     };
 
-    return (
-        <div className="bg-gray-100 min-h-screen">
-            <Navbar />
 
-            <div className="max-w-7xl mx-auto p-6 grid md:grid-cols-3 gap-6">
+return (
+    <div className="bg-[#f6f8fb] min-h-screen">
+        <Navbar />
 
-                {/* CREATE */}
-                <div className="bg-white p-6 rounded-3xl shadow-2xl h-fit top-6">
-                    <h2 className="text-xl font-bold mb-4">Create Poll</h2>
+        <div className="max-w-4xl mx-auto px-4 py-8">
 
-                    <input
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        placeholder="Question"
-                        className="w-full border p-3 rounded-xl mb-3"
-                    />
+            {/* CREATE POLL */}
+            <div className="bg-white rounded-2xl shadow-md p-5 mb-8 border border-gray-100">
 
+                <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                    Create a new poll
+                </h2>
+
+                <input
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="What's your question?"
+                    className="w-full p-3 border rounded-lg mb-3 focus:ring-2 focus:ring-blue-400 outline-none"
+                />
+
+                <div className="grid grid-cols-2 gap-3 mb-3">
                     {options.map((opt, i) => (
-                        <div key={i} className="relative mb-3">
+                        <div key={i} className="relative">
                             <input
                                 value={opt}
                                 onChange={(e) =>
                                     handleOptionChange(e.target.value, i)
                                 }
-                                placeholder="Options"
-                                className="w-full border p-3 rounded-xl"
+                                placeholder={`Option ${i + 1}`}
+                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
                             />
 
                             {options.length > 2 && (
                                 <button
                                     onClick={() => removeOption(i)}
-                                    className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center bg-red-500 text-white text-xs rounded-full hover:bg-red-600"
+                                    className="absolute top-2 right-2 text-xs text-red-500"
                                 >
-                                    ×
+                                    ✕
                                 </button>
                             )}
                         </div>
                     ))}
+                </div>
+
+                <div className="flex justify-between items-center">
 
                     <button
                         onClick={addOption}
-                        className="text-blue-500 text-sm mb-3"
+                        className="text-sm text-blue-500 hover:underline"
                     >
-                        + Add Option
+                        + Add option
                     </button>
 
                     <input
                         type="datetime-local"
                         value={expiresAt}
                         onChange={(e) => setExpiresAt(e.target.value)}
-                        className="w-full border p-3 rounded-xl mb-3"
+                        className="border p-2 rounded-lg text-sm"
                     />
-
-                    <button
-                        onClick={createPoll}
-                        className="w-full bg-blue-500 text-white p-3 rounded-xl"
-                    >
-                        Create
-                    </button>
                 </div>
 
-                {/* POLLS */}
-                <div className="md:col-span-2 space-y-4">
-
-                    {/* FILTER */}
-                    <div className="flex text-lg gap-6 border-b pb-2">
-                        {["all", "active", "expired"].map((tab) => (
-                            <button
-                                key={tab}
-                                onClick={() => setFilter(tab)}
-                                className={`capitalize ${filter === tab
-                                    ? "border-b-2 border-blue-500 text-blue-500 font-semibold"
-                                    : "text-gray-500"
-                                    }`}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
-
-                    {!loading && polls.length === 0 && (
-                        <p>No polls available</p>
-                    )}
-
-                    {polls.map((poll) => {
-                        const alreadyVoted = poll.options?.some(opt =>
-                            opt.voters?.includes(user?.email)
-                        );
-
-                        return (
-                            <div key={poll._id} className="bg-white p-5 rounded-2xl shadow">
-
-                                <div className="flex justify-between pb-4">
-                                    <h3 className="font-bold">{poll.question}</h3>
-                                    <span>
-                                        {poll.isExpired ? "Expired" : "Active"}
-                                    </span>
-                                </div>
-
-                                {poll.options?.map((opt, i) => {
-                                    const totalVotes = poll.options.reduce(
-                                        (sum, o) => sum + o.votes,
-                                        0
-                                    );
-
-                                    const percent = totalVotes
-                                        ? (opt.votes / totalVotes) * 100
-                                        : 0;
-
-                                    const isVoted = votedPolls[poll._id];
-
-                                    return (
-                                        <div key={i} className="border rounded-xl p-3 flex items-center justify-between mb-3 hover:shadow-sm transition">
-
-                                            {/* LEFT SIDE */}
-                                            <div className="w-full">
-
-                                                {/* TEXT + VOTES */}
-                                                <div className="flex justify-between text-sm mb-1">
-                                                    <span className="font-medium">{opt.text}</span>
-                                                    <span className="text-gray-500 text-xs">{opt.votes} votes</span>
-                                                </div>
-
-                                                {/* PROGRESS BAR */}
-                                                <div className="w-full bg-gray-200 rounded-full h-2">
-                                                    <div
-                                                        className="bg-blue-500 h-2 rounded-full"
-                                                        style={{ width: `${percent}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-
-                                            {/* RIGHT SIDE BUTTON */}
-                                            <div className="ml-4">
-                                                {!isVoted && !poll.isExpired ? (
-                                                    <button
-                                                        onClick={() => vote(poll._id, i)}
-                                                        className="border px-4 py-1 rounded-md text-sm hover:bg-gray-100"
-                                                    >
-                                                        Vote
-                                                    </button>
-                                                ) : (
-                                                    <button
-                                                        disabled
-                                                        className="bg-green-500 text-white px-4 py-1 rounded-md text-sm"
-                                                    >
-                                                        Voted
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-
-                                {poll.winner && (
-                                    <div className="text-green-600 font-semibold">
-                                        Winner: {poll.winner.text}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                <button
+                    onClick={createPoll}
+                    className="mt-4 w-full bg-black text-white p-3 rounded-lg hover:opacity-90 transition"
+                >
+                    Post Poll
+                </button>
             </div>
-            <Footer />
+
+            {/* FILTER TABS */}
+            <div className="flex justify-center gap-6 mb-6 text-m font-medium">
+                {["all", "active", "expired"].map((tab) => (
+                    <button
+                        key={tab}
+                        onClick={() => setFilter(tab)}
+                        className={`px-4 py-1 rounded-full transition ${
+                            filter === tab
+                                ? "bg-black text-white"
+                                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                        }`}
+                    >
+                        {tab}
+                    </button>
+                ))}
+            </div>
+
+            {/* EMPTY STATE */}
+            {!loading && polls.length === 0 && (
+                <div className="text-center text-gray-500 mt-20">
+                    No polls yet 👀
+                </div>
+            )}
+
+            {/* POLL FEED */}
+            <div className="space-y-6">
+                {polls.map((poll) => {
+                    const isVoted = votedPolls[poll._id];
+
+                    return (
+                        <div key={poll._id} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+
+                            {/* QUESTION */}
+                            <div className="flex justify-between mb-4">
+                                <h3 className="font-semibold text-gray-800">
+                                    {poll.question}
+                                </h3>
+
+                                <span className={`text-xs ${
+                                    poll.isExpired ? "text-red-500" : "text-green-500"
+                                }`}>
+                                    {poll.isExpired ? "Expired" : "Active"}
+                                </span>
+                            </div>
+
+                            {/* OPTIONS */}
+                            {poll.options?.map((opt, i) => {
+                                const totalVotes = poll.options.reduce(
+                                    (sum, o) => sum + o.votes,
+                                    0
+                                );
+
+                                const percent = totalVotes
+                                    ? (opt.votes / totalVotes) * 100
+                                    : 0;
+
+                                return (
+                                    <div
+                                        key={i}
+                                        onClick={() =>
+                                            !isVoted && !poll.isExpired && vote(poll._id, i)
+                                        }
+                                        className={`mb-3 p-3 rounded-xl cursor-pointer border transition ${
+                                            isVoted || poll.isExpired
+                                                ? "bg-gray-50"
+                                                : "hover:bg-gray-100"
+                                        }`}
+                                    >
+
+                                        <div className="flex justify-between text-sm mb-1">
+                                            <span>{opt.text}</span>
+                                            <span className="text-gray-400 text-xs">
+                                                {opt.votes}
+                                            </span>
+                                        </div>
+
+                                        <div className="w-full bg-gray-200 h-2 rounded-full">
+                                            <div
+                                                className="bg-black h-2 rounded-full"
+                                                style={{ width: `${percent}%` }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+
+                            {/* FOOTER */}
+                            {poll.winner && (
+                                <div className="mt-3 text-sm text-green-600 font-medium">
+                                    Winner: {poll.winner.text}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
-    );
+
+        <Footer />
+    </div>
+);
 }
